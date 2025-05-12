@@ -1,5 +1,6 @@
 #include<iostream> 
 #include "sign_up.h"
+#include "sign_in.h"
 using namespace std;
 
 #define YELLOW  "\033[33m"
@@ -26,7 +27,7 @@ void login(){
     system("cls");
     while (true){
         switch (Introduction()){
-            case SIGNIN:break;
+            case SIGNIN:check_user_sign_in();break;
             case SIGNUP:get_gmail_and_password_form_user();break;
             case EXIT:break;
             default:break;
