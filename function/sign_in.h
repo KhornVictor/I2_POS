@@ -2,6 +2,10 @@
 #include <fstream>
 #include <sstream>
 #include <conio.h>
+#include "Routes/admin.h"
+#include "Routes/cashier.h"
+#include "Routes/customer.h"
+#include "Routes/manager.h"
 using namespace std;
 
 #define RESET   "\033[0m"
@@ -19,9 +23,16 @@ using namespace std;
 struct Sign_In_Element{
     string email;
     string password;
+    string role;
     Sign_In_Element *next;
 };
 
+enum ROLE{
+    CUSTOMER = 1,
+    CASHIER,
+    MANAGER,
+    ADMIN
+};
 
 
 struct Sign_in_Stack{
@@ -36,10 +47,11 @@ Sign_in_Stack* create_in_sign_in(){
     return newlist;
 }
 
-void push_in_sign_in(Sign_in_Stack* s, string email, string password){
+void push_in_sign_in(Sign_in_Stack* s, string email, string password, string role){
     Sign_In_Element* newnode = new Sign_In_Element;
     newnode -> email = email;
     newnode -> password = password;
+    newnode -> role = role;
     newnode -> next = s -> top;
     s -> top = newnode;
     s -> size++;
@@ -80,7 +92,7 @@ void get_all_users_from_csv_in_sign_in(Sign_in_Stack* s, string filename) {
             getline(ss, roleStr, ',');
             getline(ss, email, ',');
             getline(ss, password);
-            push_in_sign_in(s, email, password);
+            push_in_sign_in(s, email, password, roleStr);
         }
         file.close();
     }
@@ -104,6 +116,25 @@ bool check_email_and_password_in_sign_in(Sign_in_Stack *s, string email, string 
     return false;
 }
 
+int check_role_in_sign_in(Sign_in_Stack *s, string email, string password){
+    Sign_In_Element *temporary = s -> top;
+    string role;
+    while (temporary != NULL){
+        if (temporary -> email == email && temporary -> password == password) {
+            role = temporary -> role;
+            break;
+        }
+        temporary = temporary -> next;
+    } 
+
+
+    if (role == "customer") return 1;
+    else if (role == "cashier") return 2;
+    else if (role == "manager") return 3;
+    else if (role == "admin") return 4;
+    else return 0;
+
+}
 
 void check_user_sign_in(){
     system("cls");
@@ -128,6 +159,13 @@ void check_user_sign_in(){
         if (check_email_and_password_in_sign_in(s, input.email, input.password)){
             system("cls");
             cout << GREEN << "Sign in sucess!" << RESET << endl;
+            switch (check_role_in_sign_in(s, input.email, input.password)){
+                case CUSTOMER:customer_introduction();break;
+                case CASHIER:cashier_introduction();break;
+                case MANAGER:manager_introduction();break;
+                case ADMIN:admin_introduction();break;
+                default:break;
+            }
             break;
         }
         else {
@@ -136,7 +174,6 @@ void check_user_sign_in(){
             continue;
         }
     } while (true);
+
     
-
-
 }
