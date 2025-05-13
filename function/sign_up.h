@@ -4,20 +4,9 @@
 #include <string>
 #include <cctype>
 #include <sstream>
+#include "color.h"
 #include "press_enter_to_continue.h"
 using namespace std;
-
-#define RESET   "\033[0m"
-#define BLACK   "\033[30m"
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
-#define MAGENTA "\033[35m"
-#define CYAN    "\033[36m" 
-#define WHITE   "\033[37m"
-#define GRAY    "\033[90m"
-#define BOLD    "\033[1m"
 
 struct Node{
     string name;
@@ -76,9 +65,7 @@ void get_all_users_from_csv(Stack* s, string filename) {
             getline(ss, password);
             push(s, email);
         }
-        cout << "3";
         file.close();
-        display(s);
     }
 }
 

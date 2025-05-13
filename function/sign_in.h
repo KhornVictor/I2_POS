@@ -2,23 +2,12 @@
 #include <fstream>
 #include <sstream>
 #include <conio.h>
+#include "color.h"
 #include "Routes/admin.h"
 #include "Routes/cashier.h"
 #include "Routes/customer.h"
 #include "Routes/manager.h"
 using namespace std;
-
-#define RESET   "\033[0m"
-#define BLACK   "\033[30m"
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
-#define MAGENTA "\033[35m"
-#define CYAN    "\033[36m" 
-#define WHITE   "\033[37m"
-#define GRAY    "\033[90m"
-#define BOLD    "\033[1m"
 
 struct Sign_In_Element{
     string email;
@@ -125,8 +114,7 @@ int check_role_in_sign_in(Sign_in_Stack *s, string email, string password){
             break;
         }
         temporary = temporary -> next;
-    } 
-
+    }
 
     if (role == "customer") return 1;
     else if (role == "cashier") return 2;
@@ -143,7 +131,7 @@ void check_user_sign_in(){
     Sign_In_Element input;
     int count = 0;
     do{
-        cout << CYAN << "Sign up" << RESET << endl;
+        cout << CYAN << "Sign in" << RESET << endl;
         while (true){
             cout << "Enter email: " << YELLOW; cin >> input.email; cout << RESET;
             if (check_email_in_sign_in(s, input.email)) break;
