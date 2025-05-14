@@ -199,7 +199,7 @@ bool check_validation_of_email(Stack *s, string email){
     
 }
 
-void get_gmail_and_password_form_user(){
+int get_gmail_and_password_form_user(){
     system("cls");
     Stack *s = create();
     get_all_users_from_csv(s, "Database/user.csv");
@@ -227,7 +227,7 @@ void get_gmail_and_password_form_user(){
             cout << "Enter password: "; for(int i : input.password){cout << "*";} cout << endl;
             cout << "Confirm password: "; for(int i : input.password){cout << "*";} cout << "\n" << endl;
             get_data_from_user(input.email, input.password);
-            break;
+            return 1;
         } else{
             system("cls");
             cout << RED << "Confirm password incorrect!" << RESET << endl;

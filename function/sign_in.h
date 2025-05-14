@@ -3,10 +3,6 @@
 #include <sstream>
 #include <conio.h>
 #include "color.h"
-#include "Routes/admin.h"
-#include "Routes/cashier.h"
-#include "Routes/customer.h"
-#include "Routes/manager.h"
 using namespace std;
 
 struct Sign_In_Element{
@@ -15,14 +11,6 @@ struct Sign_In_Element{
     string role;
     Sign_In_Element *next;
 };
-
-enum ROLE{
-    CUSTOMER = 1,
-    CASHIER,
-    MANAGER,
-    ADMIN
-};
-
 
 struct Sign_in_Stack{
     int size;
@@ -124,7 +112,7 @@ int check_role_in_sign_in(Sign_in_Stack *s, string email, string password){
 
 }
 
-void check_user_sign_in(){
+int check_user_sign_in(){
     system("cls");
     Sign_in_Stack *s = create_in_sign_in();
     get_all_users_from_csv_in_sign_in(s, "Database/user.csv");
@@ -147,14 +135,7 @@ void check_user_sign_in(){
         if (check_email_and_password_in_sign_in(s, input.email, input.password)){
             system("cls");
             cout << GREEN << "Sign in sucess!" << RESET << endl;
-            switch (check_role_in_sign_in(s, input.email, input.password)){
-                case CUSTOMER:customer_introduction();break;
-                case CASHIER:cashier_introduction();break;
-                case MANAGER:manager_introduction();break;
-                case ADMIN:admin_introduction();break;
-                default:break;
-            }
-            break;
+            return check_role_in_sign_in(s, input.email, input.password);
         }
         else {
             system("cls");

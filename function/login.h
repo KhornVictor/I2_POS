@@ -37,12 +37,12 @@ void ExIT(int time){
     exit(0);
 }
 
-void login(){
+int login(){
     system("cls");
     while (true){
         switch (Introduction()){
-            case SIGNIN:check_user_sign_in();break;
-            case SIGNUP:get_gmail_and_password_form_user();break;
+            case SIGNIN: return check_user_sign_in(); break;
+            case SIGNUP:return get_gmail_and_password_form_user();break;
             case EXIT:ExIT(3);break;
             default:break;
         }

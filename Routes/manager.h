@@ -1,4 +1,5 @@
 #include<iostream>
+#include "color.h"
 using namespace std;
 
 
