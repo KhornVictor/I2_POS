@@ -8,6 +8,7 @@ using namespace std;
 struct Sign_In_Element{
     string email;
     string password;
+    string name;
     string role;
     Sign_In_Element *next;
 };
@@ -24,10 +25,11 @@ Sign_in_Stack* create_in_sign_in(){
     return newlist;
 }
 
-void push_in_sign_in(Sign_in_Stack* s, string email, string password, string role){
+void push_in_sign_in(Sign_in_Stack* s, string email, string password, string role, string name){
     Sign_In_Element* newnode = new Sign_In_Element;
     newnode -> email = email;
     newnode -> password = password;
+    newnode -> name = name;
     newnode -> role = role;
     newnode -> next = s -> top;
     s -> top = newnode;
@@ -69,7 +71,7 @@ void get_all_users_from_csv_in_sign_in(Sign_in_Stack* s, string filename) {
             getline(ss, roleStr, ',');
             getline(ss, email, ',');
             getline(ss, password);
-            push_in_sign_in(s, email, password, roleStr);
+            push_in_sign_in(s, email, password, roleStr, name);
         }
         file.close();
     }
@@ -109,7 +111,6 @@ int check_role_in_sign_in(Sign_in_Stack *s, string email, string password){
     else if (role == "manager") return 3;
     else if (role == "admin") return 4;
     else return 0;
-
 }
 
 int check_user_sign_in(){

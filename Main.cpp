@@ -14,11 +14,12 @@ enum ROLE{
 };
 
 int main(){
-    switch(login()){
-        case CUSTOMER:customer_introduction();break;
-        case CASHIER:cashier_introduction();break;
-        case MANAGER:manager_introduction();break;
-        case ADMIN:admin_introduction();break;
+    while(true){
+        switch(login()){
+            case CUSTOMER:customer_introduction();break;
+            case CASHIER:cashier_introduction();break;
+            case MANAGER:manager_introduction();break;
+            case ADMIN:admin_introduction();break;
+        }
     }
-    
 }
