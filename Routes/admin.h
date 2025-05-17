@@ -167,7 +167,7 @@ void admin_option(){
 }
 
 
-void admin_display_user_table(Admin_List* list) {
+void admin_display_user_table(Admin_List* list, bool clear) {
     Admin_User_Element* temporary = list->head;
     int number = 1;
     cout << GREEN << "Here are all user in this system ..." << endl << RESET << endl;
@@ -204,8 +204,7 @@ void admin_display_user_table(Admin_List* list) {
          << BLUE   << "BLUE"   << RESET << " : cashier\t"
          << YELLOW << "YELLOW" << RESET << " : customer\t"
          << endl;
-    cout << GRAY; system("pause"); cout << RESET << endl;
-    system("cls");
+    if (clear) {cout << GRAY; system("pause"); cout << RESET << endl;system("cls");}
 }
 
 void admin_check_user_display_role_menu (Admin_List* list,string role){
@@ -371,7 +370,7 @@ void admin_check_user_display_menu(Admin_List* list){
         cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " Enter option: " << YELLOW; cin >> option; cout << RESET;
         switch (option){
-            case 1:system("cls");admin_display_user_table(list);break;
+            case 1:system("cls");admin_display_user_table(list, true);break;
             case 2:system("cls");admin_check_user_display_age_menu(list);break;
             case 3:system("cls");admin_check_user_display_gender_menu(list);break;
             case 4:system("cls");admin_check_user_display_role_menu(list, "admin");break;
@@ -383,10 +382,6 @@ void admin_check_user_display_menu(Admin_List* list){
             default:system("cls");cout << RED << "Invalid Input" << RESET << endl;break;
         }
     }
-}
-
-void admin_check_user_modify_add_user(Admin_List *list){
-    cout << "You can add something here ...";
 }
 
 void admin_write_all_users_to_csv(Admin_List* list, const string& filename) {
@@ -430,91 +425,142 @@ void admin_check_user_modify_change_information_add_to_list(Admin_List *list, in
     admin_add_specific(list, select, name, gender, age, phone, role, email, password);
 }
 
-string admin_check_user_modify_change_information_name(){
+bool check_validation_of_email(Admin_List *s, string email){
+    Admin_User_Element* temporary = s -> head;
+    bool check = false;
+    while (temporary != NULL){
+        if(temporary -> email == email) {
+            system("cls");
+            cout << RED << "This email has used by other user!" << RESET << endl;
+            check = true;  
+            break;
+        }temporary = temporary -> next;
+    }return check;
+}
+
+string admin_check_user_modify_change_information_name(int header_condition){
     string x;
     while (true){
-        cout << CYAN << "Name modification ... " << RESET << endl;
+        if (header_condition == 1) cout << CYAN << "Name modification ... " << RESET << endl;
+        else if (header_condition == 2) cout << CYAN << "Adding User ... " << RESET << endl;
         cout << "Enter new name: " << YELLOW; getline(cin >> ws, x); cout << RESET;
         system("cls");
-        cout << GREEN << "Name's changed !" << RESET << endl;
+        if (header_condition == 1) cout << GREEN << "Name's changed !" << RESET << endl;
+        else if (header_condition == 2) cout << GREEN << "Name's added !\n" << RESET << endl;
         if (admin_isAllAlphabets(x)) return x;
         else {system("cls");cout << RED << "Invlid name!" << RESET << endl;continue;}
     }
 }
 
-char admin_check_user_modify_change_information_gender(){
+char admin_check_user_modify_change_information_gender(int header_condition){
     char x;
     while (true){
-        cout << CYAN << "Gender modification ... " << RESET << endl;
+        if (header_condition == 1) cout << CYAN << "Gender modification ... " << RESET << endl;
+        else if (header_condition == 2) cout << CYAN << "Adding User ... " << RESET << endl;
         cout << "Enter new Gender: " << YELLOW; cin >> x; cout << RESET;
         system("cls");
-        cout << GREEN << "Gender's changed !" << RESET << endl;
+        if (header_condition == 1) cout << GREEN << "Gender's changed !" << RESET << endl;
+        else if (header_condition == 2) cout << GREEN << "Gender's added !\n" << RESET << endl;
         x = toupper(x);
         if (x == 'M' || x == 'F') return x;
         else {system("cls");cout << RED << "Invlid gender!" << RESET << endl; continue;}
     }
 }
 
-int admin_check_user_modify_change_information_age(){
+int admin_check_user_modify_change_information_age(int header_condition){
     int x;
     while (true){
-        cout << CYAN << "Age modification ... " << RESET << endl;
+        if (header_condition == 1) cout << CYAN << "Age modification ... " << RESET << endl;
+        else if (header_condition == 2) cout << CYAN << "Adding User ... " << RESET << endl;
         cout << "Enter new Age: " << YELLOW; cin >> x; cout << RESET;
         system("cls");
-        cout << GREEN << "Age's changed !" << RESET << endl;
+        if (header_condition == 1) cout << GREEN << "Age's changed !" << RESET << endl;
+        else if (header_condition == 2) cout << GREEN << "Age's added !\n" << RESET << endl;
         if (x >= 0 && x <= 100) return x;
         else {system("cls");cout << RED << "Invlid age!" << RESET << endl; continue;}
     }
 }
 
-string admin_check_user_modify_change_information_phone(){
+string admin_check_user_modify_change_information_phone(int header_condition){
     while (true){
         string x;
-        cout << CYAN << "Phone modification ... " << RESET << endl;
+        if (header_condition == 1) cout << CYAN << "Phone modification ... " << RESET << endl;
+        else if (header_condition == 2) cout << CYAN << "Adding User ... " << RESET << endl;
         cout << "Enter new Phone: " << YELLOW; cin >> x; cout << RESET;
         system("cls");
-        cout << GREEN << "Phone's changed !" << RESET << endl;
+        if (header_condition == 1) cout << GREEN << "Phone's changed !" << RESET << endl;
+        else if (header_condition == 2) cout << GREEN << "Phone's added !\n" << RESET << endl;
         if (admin_isAllDigits(x) && x[0] == '0' && (x.size() == 9 || x.size() == 10)) return x;
         else {system("cls");cout << RED << "Invlid Phone!" << RESET << endl; continue;}
     }
 }
 
-string admin_check_user_modify_change_information_role(){
+string admin_check_user_modify_change_information_role(int header_condition){
     string x;
     while (true){
-        cout << CYAN << "Role modification ... " << RESET << endl;
+        if (header_condition == 1) cout << CYAN << "Role modification ... " << RESET << endl;
+        else if (header_condition == 2) cout << CYAN << "Adding User ... " << RESET << endl;
         cout << "Enter new Role: " << YELLOW; cin >> x; cout << RESET;
         x = admin_change_string_to_lower(x);
         system("cls");
-        cout << GREEN << "Role's changed !" << RESET << endl;
+        if (header_condition == 1) cout << GREEN << "Role's changed !" << RESET << endl;
+        else if (header_condition == 2) cout << GREEN << "Role's added !\n" << RESET << endl;
         if (x == "admin"   || 
             x == "manager" || 
             x == "cashier" ||
             x == "customer"
         ) return x;
-        else {system("cls");cout << RED << "Invlid Phone!" << RESET << endl; continue;}
+        else {system("cls");cout << RED << "Invlid Role!" << RESET << endl; continue;}
     }
 }
 
-string admin_check_user_modify_change_information_email(){
+string admin_check_user_modify_change_information_email(Admin_List *list ,int header_condition){
     string x;
     while (true){
-        cout << CYAN << "Email modification ... " << RESET << endl;
+        if (header_condition == 1) cout << CYAN << "Email modification ... " << RESET << endl;
+        else if (header_condition == 2) cout << CYAN << "Adding User ... " << RESET << endl;
         cout << "Enter new Email: " << YELLOW; cin >> x; cout << RESET;
         system("cls");
-        cout << GREEN << "Email's changed !" << RESET << endl;
+        if (header_condition == 1) cout << GREEN << "Email's changed !" << RESET << endl;
+        else if (header_condition == 2) cout << GREEN << "Email's added !\n" << RESET << endl;
+        if (check_validation_of_email(list, x)) continue;
         if (x.size() >= 10 && x.substr(x.size() - 10) == "@gmail.com") return x;
         else {system("cls");cout << RED << "Invlid Email!" << RESET << endl; continue;}
     }
 }
 
-string admin_check_user_modify_change_information_password(){
+string admin_check_user_modify_change_information_password(int header_condition){
     string x;
-    cout << CYAN << "Password modification ... " << RESET << endl;
-    cout << "Password new Phone: " << YELLOW; cin >> x; cout << RESET;
+    if (header_condition == 1) cout << CYAN << "Password modification ... " << RESET << endl;
+    else if (header_condition == 2) cout << CYAN << "Adding User ... " << RESET << endl;
+    cout << "Enter new Password: " << YELLOW; cin >> x; cout << RESET;
     system("cls");
-    cout << GREEN << "Password's changed !" << RESET << endl;
+    if (header_condition == 1) cout << GREEN << "Password's changed !" << RESET << endl;
+    else if (header_condition == 2) cout << GREEN << "Passowrd's added !\n" << RESET << endl;
     return x;
+}
+
+void admin_check_user_modify_add_user(Admin_List *list){
+    string email = admin_check_user_modify_change_information_email(list, 2);
+    string password = admin_check_user_modify_change_information_password(2);
+    string name = admin_check_user_modify_change_information_name(2);
+    int age = admin_check_user_modify_change_information_age(2);
+    char gender = admin_check_user_modify_change_information_gender(2);
+    string role = admin_check_user_modify_change_information_role(2);
+    string phone = admin_check_user_modify_change_information_phone(2);
+    system("cls");
+    cout << CYAN << "New User ... " << RESET << endl
+         << "Name :   " << YELLOW << name << RESET << endl
+         << "Gender : " << YELLOW << gender << RESET << endl
+         << "Age :    " << YELLOW << age << RESET << endl
+         << "Role :   " << YELLOW << role << RESET << endl
+         << "Phone :  " << YELLOW << phone << RESET << endl
+         << "Email :  " << YELLOW << email << RESET << endl << endl;
+    cout << GRAY; system("pause"); system("cls"); cout << RESET;
+    cout << GREEN << "New User added ... " << RESET << endl;
+    Admin_insert_user_end(list, name, gender, age, phone, role, email, password);
+    admin_write_all_users_to_csv(list, "Database/user.csv");
+
 }
 
 
@@ -606,13 +652,13 @@ void admin_check_user_modify_change_information(Admin_List *list){
         cout << RED  << "||" << RESET << "============================================" << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " Modification option: " << YELLOW; cin >> option; cout << RESET;
         switch (option){
-            case 1:system("cls");temporary -> name = admin_check_user_modify_change_information_name();break;
-            case 2:system("cls");temporary -> gender = admin_check_user_modify_change_information_gender();break;
-            case 3:system("cls");temporary -> age = admin_check_user_modify_change_information_age();break;
-            case 4:system("cls");temporary -> role = admin_check_user_modify_change_information_role();break;
-            case 5:system("cls");temporary -> email = admin_check_user_modify_change_information_email();break;
-            case 6:system("cls");temporary -> phone = admin_check_user_modify_change_information_phone();break;
-            case 7:system("cls");temporary -> password = admin_check_user_modify_change_information_password();break;
+            case 1:system("cls");temporary -> name = admin_check_user_modify_change_information_name(1);break;
+            case 2:system("cls");temporary -> gender = admin_check_user_modify_change_information_gender(1);break;
+            case 3:system("cls");temporary -> age = admin_check_user_modify_change_information_age(1);break;
+            case 4:system("cls");temporary -> role = admin_check_user_modify_change_information_role(1);break;
+            case 5:system("cls");temporary -> email = admin_check_user_modify_change_information_email(list, 1);break;
+            case 6:system("cls");temporary -> phone = admin_check_user_modify_change_information_phone(1);break;
+            case 7:system("cls");temporary -> password = admin_check_user_modify_change_information_password(1);break;
             case 8:system("cls");break;
         }
         admin_check_user_modify_change_information_add_to_list(list, select, temporary -> name, temporary -> gender, temporary -> age, temporary -> phone, temporary -> role, temporary -> email, temporary -> password);
@@ -634,7 +680,7 @@ void admin_check_user_modify_menu(Admin_List *list){
     int number = 1;
     int option = 0;
     while(option != 3){
-        cout << GREEN << "Modification Menu ..." << endl << RESET << endl;
+        cout << CYAN << "Modification Menu ..." << endl << RESET << endl;
         cout << left
             << setw(8)  << "No"
             << setw(20) << "Name"
@@ -686,6 +732,54 @@ void admin_check_user_modify_menu(Admin_List *list){
     }
 }
 
+void admin_check_user_search_display_email_only(Admin_List* list) {
+    Admin_User_Element* temp = list->head;
+    int number = 1;
+    cout << left << setw(8) << "No" << setw(30) << "Email" << endl;
+    cout << GRAY << string(38, '-') << RESET << endl;
+    while (temp != NULL) {
+        cout << left << setw(8) << number << YELLOW << setw(30)  << temp->email << RESET << endl;
+        temp = temp->next;
+        number++;
+    } cout << GRAY << string(38, '-') << RESET << endl;
+}
+
+void admin_check_user_search_menu(Admin_List *list){
+    string email;
+    bool check = false;
+    Admin_User_Element *temporary = list -> head;
+    admin_check_user_search_display_email_only(list);
+    cout << endl;
+    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin/Check User/Search         " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter Email for Search          " << RED << "||" << RESET << endl; 
+    cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Email: " << YELLOW; getline(cin >> ws, email); cout << RESET; system("cls");
+    while(temporary != NULL){
+        if (temporary -> email == email){
+            cout << GREEN;
+            for (char i : temporary -> name){
+                if (i == ' ') break;
+                else cout << i;
+            }
+            cout << "'s Information" << RESET << endl;
+            cout << GRAY << string(50, '-') << RESET << endl;
+            cout << "Name: " << YELLOW << temporary -> name << RESET << endl;
+            cout << "Gender: " << YELLOW << temporary -> gender << RESET << endl;
+            cout << "Age: " << YELLOW << temporary -> age << RESET << endl;
+            cout << "Role: " << YELLOW << temporary -> role << RESET << endl;
+            cout << "Email: " << YELLOW << temporary -> email << RESET << endl;
+            cout << "Phone: " << YELLOW << temporary -> phone << RESET << endl;
+            cout << GRAY << string(50, '-') << RESET << endl;
+            check = true;
+            break;
+        }
+        temporary = temporary -> next;
+    }
+    if (!check) cout << RED << "Email not found!" << RESET << endl;
+    cout << endl << GRAY; system("pause"); system("cls"); cout << RESET;
+}
+
 void admin_check_user_menu(Admin_List* list){
     system("cls");
     int option = 0;
@@ -702,7 +796,7 @@ void admin_check_user_menu(Admin_List* list){
         switch (option){
             case 1:system("cls");admin_check_user_display_menu(list);break;
             case 2:system("cls");admin_check_user_modify_menu(list);break;
-            case 3:system("cls");break;
+            case 3:system("cls");admin_check_user_search_menu(list);break;
             case 4:system("cls");break;
             default:system("cls");cout << RED << "Invalid Input" << RESET << endl;break;
         }
