@@ -20,6 +20,6 @@ int main(){
             case CASHIER:cashier_introduction();break;
             case MANAGER:manager_introduction();break;
             case ADMIN:admin_introduction();break;
-        }
+        }   
     }
-}
+// }

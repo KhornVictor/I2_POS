@@ -51,7 +51,7 @@ void Admin_insert_user_begin(Admin_List *list, string name, char gender, int age
     list -> size++;                                                                             
 }
 
-void Admin_insert_user_end(Admin_List *list, char gender, string name, int age, string phone, string role, string email, string password){
+void Admin_insert_user_end(Admin_List *list, string name, char gender, int age, string phone, string role, string email, string password){
     Admin_User_Element *newnode = new Admin_User_Element; 
     newnode -> name = name;
     newnode -> gender = gender;
@@ -66,6 +66,65 @@ void Admin_insert_user_end(Admin_List *list, char gender, string name, int age, 
     else list -> tail -> next = newnode;                                                        
     list -> tail = newnode;                                                                      
     list -> size++;                                                                             
+}
+
+void admin_delete_end (Admin_List* list) {
+    if (list -> size == 0) return;                                                         
+    Admin_User_Element *temporary = list -> tail;                                                      
+    list -> tail = list -> tail -> previous;                                              
+    if (list -> tail != NULL) list -> tail -> next = NULL;                                 
+    else list -> head = NULL;                                                                     
+    delete temporary;                                                                        
+    list -> size--;                                                                                  
+}
+
+void admin_delete_begin (Admin_List* list) {
+    if (list -> size == 0) return;                                                            
+    Admin_User_Element *temporary = list -> head;                                                       
+    list -> head = list -> head -> next;                                                     
+    if (list->head != NULL) list -> head -> previous = NULL;                                   
+    else list->tail = NULL;                                                                        
+    delete temporary;                                                                   
+    list->size--;                                                           
+}
+
+void admin_delete_random_variablesx_by_index(Admin_List* list, int index_that_have_to_delete){
+    if (list -> size == 0 || index_that_have_to_delete < 0) return;
+    if (index_that_have_to_delete == list -> size) admin_delete_end(list);
+    else if (index_that_have_to_delete == 1) admin_delete_begin(list);
+    else {
+        Admin_User_Element *temporary = list->head;                                                
+        for (int i = 0; i < index_that_have_to_delete - 1; i++) temporary = temporary->next;           
+        if (temporary->previous != NULL) temporary->previous->next = temporary->next;       
+        else list->head = temporary->next;                                                    
+        if (temporary->next != NULL) temporary->next->previous = temporary->previous;             
+        else list->tail = temporary->previous;                                              
+        delete temporary;                                                            
+        list->size--;                                                                  
+    }
+}
+
+void admin_add_specific(Admin_List *list, int position, string name, char gender, int age, string phone, string role, string email, string password){
+    Admin_User_Element* newnode = new Admin_User_Element;
+    newnode -> name = name;
+    newnode -> gender = gender;
+    newnode -> age = age;
+    newnode -> phone = phone;
+    newnode -> role = role;
+    newnode -> email = email;
+    newnode -> password = password;
+    if (position == 1 || list -> size == 0) Admin_insert_user_begin(list, name, gender, age, phone, role, email, password);
+    else if (position == list -> size - 1) Admin_insert_user_end(list, name, gender, age, phone, role, email, password); 
+    else if(position < 0 || position > list -> size) cout << "Invalid Position" << endl;
+    else {
+        Admin_User_Element* temporary = list->head;
+        for (int i = 1; i < position - 1; i++){temporary = temporary -> next;}
+        newnode -> previous = temporary;
+        newnode -> next = temporary -> next; 
+        if (temporary -> next != NULL) temporary -> next -> previous = newnode;
+        temporary -> next = newnode;
+        list -> size++;
+    }
 }
 
 void admin_get_all_users_from_csv(Admin_List* s, string filename) {
@@ -88,7 +147,7 @@ void admin_get_all_users_from_csv(Admin_List* s, string filename) {
             int age = stoi(ageStr);
             char gender = genderStr[0];
 
-            Admin_insert_user_end(s, gender, name, age, phone, role, email, password);
+            Admin_insert_user_end(s, name, gender, age, phone, role, email, password);
         }
         file.close();
     }
@@ -96,7 +155,8 @@ void admin_get_all_users_from_csv(Admin_List* s, string filename) {
 
 void admin_option(){
     cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
-    cout << RED  << "||" << RESET << " Admin welcome                   " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin welcome                   " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
     cout << RED  << "||" << RESET << " 1. Check User                   " << RED << "||" << RESET << endl; 
     cout << RED  << "||" << RESET << " 2. Check Product                " << RED << "||" << RESET << endl;
     cout << RED  << "||" << RESET << " 3. Check Login                  " << RED << "||" << RESET << endl;
@@ -104,7 +164,6 @@ void admin_option(){
     cout << RED  << "||" << RESET << " 5. Exit                         " << RED << "||" << RESET << endl;
     cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
     cout << RED  << "||" << RESET << " Enter option: ";
-    
 }
 
 
@@ -298,7 +357,8 @@ void admin_check_user_display_menu(Admin_List* list){
     int option = 0;
     while(option != 9){
         cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
-        cout << RED  << "||" << RESET << " Admin welcome                   " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin/Check User/Display        " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " 1. All                          " << RED << "||" << RESET << endl; 
         cout << RED  << "||" << RESET << " 2. Age                          " << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " 3. Gender                       " << RED << "||" << RESET << endl;
@@ -320,7 +380,274 @@ void admin_check_user_display_menu(Admin_List* list){
             case 7:system("cls");admin_check_user_display_role_menu(list, "cashier");break;
             case 8:system("cls");admin_display_user_email_password(list);break;
             case 9:system("cls");break;
-            default:break;
+            default:system("cls");cout << RED << "Invalid Input" << RESET << endl;break;
+        }
+    }
+}
+
+void admin_check_user_modify_add_user(Admin_List *list){
+    cout << "You can add something here ...";
+}
+
+void admin_write_all_users_to_csv(Admin_List* list, const string& filename) {
+    ofstream file(filename, ios::out);
+    if (!file.is_open()) {cout << RED << "Cannot open the file for writing!" << RESET << endl; return;}
+    Admin_User_Element* temporary = list -> head;
+    while (temporary != NULL) {
+        file << temporary -> name << ","
+             << temporary -> age << ","
+             << temporary -> gender << ","
+             << temporary -> phone << ","
+             << temporary -> role << ","
+             << temporary -> email << ","
+             << temporary -> password << endl;
+        temporary = temporary ->next;
+    }
+    file.close();
+}
+
+void admin_check_user_modify_change_information_add_to_list(Admin_List *list, int select, string name, char gender, int age, string phone, string role, string email, string password){
+    admin_delete_random_variablesx_by_index(list, select);
+    admin_add_specific(list, select, name, gender, age, phone, role, email, password);
+}
+
+string admin_check_user_modify_change_information_name(){
+    string x;
+    cout << CYAN << "Name modification ... " << RESET << endl;
+    cout << "Enter new name: " << YELLOW; getline(cin >> ws, x); cout << RESET;
+    system("cls");
+    cout << GREEN << "Name's changed !" << RESET << endl;
+    return x;
+}
+
+char admin_check_user_modify_change_information_gender(){
+    char x;
+    cout << CYAN << "Gender modification ... " << RESET << endl;
+    cout << "Enter new Gender: " << YELLOW; cin >> x; cout << RESET;
+    system("cls");
+    cout << GREEN << "Gender's changed !" << RESET << endl;
+    return x;
+}
+
+int admin_check_user_modify_change_information_age(){
+    int x;
+    cout << CYAN << "Age modification ... " << RESET << endl;
+    cout << "Enter new Age: " << YELLOW; cin >> x; cout << RESET;
+    system("cls");
+    cout << GREEN << "Age's changed !" << RESET << endl;
+    return x;
+}
+
+string admin_check_user_modify_change_information_phone(){
+    string x;
+    cout << CYAN << "Phone modification ... " << RESET << endl;
+    cout << "Enter new Phone: " << YELLOW; cin >> x; cout << RESET;
+    system("cls");
+    cout << GREEN << "Phone's changed !" << RESET << endl;
+    return x;
+}
+
+string admin_check_user_modify_change_information_role(){
+    string x;
+    cout << CYAN << "Role modification ... " << RESET << endl;
+    cout << "Enter new Role: " << YELLOW; cin >> x; cout << RESET;
+    system("cls");
+    cout << GREEN << "Role's changed !" << RESET << endl;
+    return x;
+}
+
+string admin_check_user_modify_change_information_email(){
+    string x;
+    cout << CYAN << "Email modification ... " << RESET << endl;
+    cout << "Enter new Email: " << YELLOW; cin >> x; cout << RESET;
+    system("cls");
+    cout << GREEN << "Email's changed !" << RESET << endl;
+    return x;
+}
+
+string admin_check_user_modify_change_information_password(){
+    string x;
+    cout << CYAN << "Password modification ... " << RESET << endl;
+    cout << "Password new Phone: " << YELLOW; cin >> x; cout << RESET;
+    system("cls");
+    cout << GREEN << "Password's changed !" << RESET << endl;
+    return x;
+}
+
+
+void admin_check_user_modify_change_information(Admin_List *list){
+    Admin_User_Element* temporary = new Admin_User_Element;
+    int option = 0;
+    int select;
+    while(option != 8){
+        int number = 1;
+        temporary = list -> head; 
+        cout << GREEN << "Modification Menu ..." << endl << RESET << endl;
+        cout << left
+            << setw(8)  << "No"
+            << setw(20) << "Name"
+            << setw(6)  << "Age"
+            << setw(8)  << "Gender"
+            << setw(15) << "Phone"
+            << setw(12) << "Role"
+            << endl;
+        cout << string(69, '-') << endl;
+
+        while (temporary != NULL) {
+            if (temporary -> role == "admin") cout << GREEN;
+            else if (temporary -> role == "customer") cout << YELLOW;
+            else if (temporary -> role == "manager") cout << RED;
+            else cout << BLUE;
+            cout << left
+                << setw(8)  << number
+                << setw(20) << temporary -> name
+                << setw(6)  << temporary -> age
+                << setw(8)  << temporary -> gender
+                << setw(15) << temporary -> phone
+                << setw(12) << temporary -> role
+                << endl;
+            temporary = temporary -> next;
+            number++;
+            cout << RESET;
+        }
+        cout << endl
+            << GREEN  << "GREEN"  << RESET << " : admin\t"
+            << RED    << "RED"    << RESET << " : manager\t"
+            << BLUE   << "BLUE"   << RESET << " : cashier\t"
+            << YELLOW << "YELLOW" << RESET << " : customer\t"
+            << endl << endl;
+
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =================================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin/Check User/Modify/Change Information " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "--------------------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Enter No of user to modify                 " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Enter (0) to back ...                      " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << "============================================" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Number: " << YELLOW; cin >> select; cout << RESET;
+
+        char admin_check_if_want_to_write = 'A';
+        if (select != 0){
+            temporary = list -> head;
+            for (int i = 0; i < select - 1; i++){temporary = temporary -> next;}
+            system("cls");
+            cout << GREEN;
+            for (char i : temporary -> name){
+                if (i == ' ') break;
+                else cout << i;
+            }
+            cout << "'s Information" << RESET << endl;
+            cout << GRAY << string(50, '-') << RESET << endl;
+            cout << "Name: " << YELLOW << temporary -> name << RESET << endl;
+            cout << "Gender: " << YELLOW << temporary -> gender << RESET << endl;
+            cout << "Age: " << YELLOW << temporary -> age << RESET << endl;
+            cout << "Role: " << YELLOW << temporary -> role << RESET << endl;
+            cout << "Email: " << YELLOW << temporary -> email << RESET << endl;
+            cout << "Phone: " << YELLOW << temporary -> phone << RESET << endl;
+            cout << GRAY << string(50, '-') << RESET << endl;
+    
+            cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =================================>" << RESET << endl;
+            cout << RED  << "||" << GRAY  << " Admin/Check User/Modify/Change Information " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << "--------------------------------------------" << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " Enter the option to modify                 " << RED << "||" << RESET << endl; 
+            cout << RED  << "||" << RESET << " 1. Name                                    " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " 2. Gender                                  " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " 3. Age                                     " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " 4. Role                                    " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " 5. Email                                   " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " 6. Phone                                   " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " 7. Password                                " << RED << "||" << RESET << endl;  
+            cout << RED  << "||" << RESET << " 8. Back                                    " << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << "============================================" << RED << "||" << RESET << endl;
+            cout << RED  << "||" << RESET << " Modification option: " << YELLOW; cin >> option; cout << RESET;
+            switch (option){
+                case 1:system("cls");temporary -> name = admin_check_user_modify_change_information_name();break;
+                case 2:system("cls");temporary -> gender = admin_check_user_modify_change_information_gender();break;
+                case 3:system("cls");temporary -> age = admin_check_user_modify_change_information_age();break;
+                case 4:system("cls");temporary -> role = admin_check_user_modify_change_information_role();break;
+                case 5:system("cls");temporary -> email = admin_check_user_modify_change_information_email();break;
+                case 6:system("cls");temporary -> phone = admin_check_user_modify_change_information_phone();break;
+                case 7:system("cls");temporary -> password = admin_check_user_modify_change_information_password();break;
+                case 8:system("cls");break;
+            }
+            admin_check_user_modify_change_information_add_to_list(list, select, temporary -> name, temporary -> gender, temporary -> age, temporary -> phone, temporary -> role, temporary -> email, temporary -> password);
+            while (admin_check_if_want_to_write != 'N' && admin_check_if_want_to_write != 'Y') {
+                cout << "Do you want to modify something else? [Y(es)/N(o)] => "; cin >> admin_check_if_want_to_write;
+                admin_check_if_want_to_write = toupper(admin_check_if_want_to_write);
+                switch (admin_check_if_want_to_write){
+                    case 'Y':system("cls");cout << GREEN << "Information changed!!!" << RESET << endl << YELLOW << "Note: " << RESET << "It hasn't pushed to database yet." << endl;break;
+                    case 'N':system("cls");admin_write_all_users_to_csv(list, "Database/user.csv");break;
+                    default :system("cls");cout << RED << "Invalid input" << RESET << endl;
+                }
+            }  
+        }
+        else if (select > list -> size) {cout << RED << "Invalid Input" << RESET << endl; continue;}
+        else if (select == 0){
+            while (admin_check_if_want_to_write != 'N' && admin_check_if_want_to_write != 'Y') {
+                cout << "You are backing to previous page do you want to write to database? [Y(es)/N(o)] => "; cin >> admin_check_if_want_to_write;
+                admin_check_if_want_to_write = toupper(admin_check_if_want_to_write);
+                switch (admin_check_if_want_to_write){
+                    case 'Y':system("cls");admin_write_all_users_to_csv(list, "Database/user.csv");break;
+                    case 'N':system("cls");break;
+                    default :system("cls");cout << RED << "Invalid input" << RESET << endl;
+                }
+            }  
+        }
+    }
+}
+
+void admin_check_user_modify_menu(Admin_List *list){
+    Admin_User_Element* temporary = list->head;
+    int number = 1;
+    int option = 0;
+    while(option != 3){
+        cout << GREEN << "Modification Menu ..." << endl << RESET << endl;
+        cout << left
+            << setw(8)  << "No"
+            << setw(20) << "Name"
+            << setw(6)  << "Age"
+            << setw(8)  << "Gender"
+            << setw(15) << "Phone"
+            << setw(12) << "Role"
+            << endl;
+        cout << string(69, '-') << endl;
+
+        while (temporary != NULL) {
+            if (temporary -> role == "admin") cout << GREEN;
+            else if (temporary -> role == "customer") cout << YELLOW;
+            else if (temporary -> role == "manager") cout << RED;
+            else cout << BLUE;
+            cout << left
+                << setw(8)  << number
+                << setw(20) << temporary -> name
+                << setw(6)  << temporary -> age
+                << setw(8)  << temporary -> gender
+                << setw(15) << temporary -> phone
+                << setw(12) << temporary -> role
+                << endl;
+            temporary = temporary -> next;
+            number++;
+            cout << RESET;
+        }
+        cout << endl
+            << GREEN  << "GREEN"  << RESET << " : admin\t"
+            << RED    << "RED"    << RESET << " : manager\t"
+            << BLUE   << "BLUE"   << RESET << " : cashier\t"
+            << YELLOW << "YELLOW" << RESET << " : customer\t"
+            << endl << endl;
+
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin/Check User/Modify         " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 1. Add User                     " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << " 2. Change information           " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 3. Back                         " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Enter option: " << YELLOW; cin >> option; cout << RESET;
+        switch (option){
+            case 1:system("cls");admin_check_user_modify_add_user(list);break;
+            case 2:system("cls");admin_check_user_modify_change_information(list);break;
+            case 3:system("cls");break;
+            default:system("cls");cout << RED << "Invalid Input" << RESET << endl;break;
         }
     }
 }
@@ -330,7 +657,8 @@ void admin_check_user_menu(Admin_List* list){
     int option = 0;
     while(option != 4){
         cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
-        cout << RED  << "||" << RESET << " Admin welcome                   " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin/Check User                " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " 1. Display                      " << RED << "||" << RESET << endl; 
         cout << RED  << "||" << RESET << " 2. Modify                       " << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " 3. Search                       " << RED << "||" << RESET << endl;
@@ -339,12 +667,13 @@ void admin_check_user_menu(Admin_List* list){
         cout << RED  << "||" << RESET << " Enter option: " << YELLOW; cin >> option; cout << RESET;
         switch (option){
             case 1:system("cls");admin_check_user_display_menu(list);break;
+            case 2:system("cls");admin_check_user_modify_menu(list);break;
+            case 3:system("cls");break;
             case 4:system("cls");break;
-            default:break;
+            default:system("cls");cout << RED << "Invalid Input" << RESET << endl;break;
         }
     }
 }
-
 
 void admin_exit(int time){
     for (int i = time; i > 0; i--){
