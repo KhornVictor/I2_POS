@@ -5,7 +5,6 @@
 #include "sign_in.h"
 using namespace std;
 
-
 enum LOGIN{
     SIGNIN = 1,
     SIGNUP,
