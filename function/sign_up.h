@@ -71,7 +71,7 @@ void get_all_users_from_csv(Stack* s, string filename) {
 
 bool isAllAlphabets(string str) {
     for (char ch : str) {if (!(isalpha(ch) || isspace(ch))) return false;}
-    return true;
+    return true;    
 }
 
 bool isAllDigits(string str) {

@@ -10,5 +10,6 @@ using namespace std;
 #define MAGENTA "\033[35m"
 #define CYAN    "\033[36m" 
 #define WHITE   "\033[37m"
+#define ORANGE  "\033[38;5;208m"
 #define GRAY    "\033[90m"
 #define BOLD    "\033[1m"

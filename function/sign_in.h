@@ -36,7 +36,7 @@ void push_in_sign_in(Sign_in_Stack* s, string email, string password, string rol
     s -> size++;
 }
 
-string getPassword_in_sign_in(){
+string getPassword_in_sign_in(){    
     string password;
     char ch ;
     cout << "Enter password: " ;

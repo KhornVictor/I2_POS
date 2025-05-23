@@ -1,0 +1,29 @@
+✅ BASIC OPERATIONS ON PRODUCT DATA
+
+1. Sorting
+    Sort products by:
+        Price (ascending/descending)
+        Stock (to find low or high inventory)
+        Brand or Category (alphabetically)
+
+2. Filtering  
+    Show only products from:
+        A specific Brand (e.g., Coca-Cola)  
+        A certain Category (e.g., Snacks)
+        Price under $5
+        Stock less than 50 (low inventory)
+
+3. Searching
+    Find a product by name or ID
+
+4. Grouping & Aggregation
+    Count products by Category or Brand
+    Average price per category
+
+5. Checking Inventory
+    Which products have stock below a threshold (e.g., < 30)?
+    Out-of-stock products (stock == 0)
+
+6. Adding or Removing Products
+    Add new rows to the CSV (e.g., new products)
+    Remove discontinued products

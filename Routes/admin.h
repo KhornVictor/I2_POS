@@ -104,7 +104,7 @@ void admin_delete_random_variablesx_by_index(Admin_List* list, int index_that_ha
     }
 }
 
-void admin_add_specific(Admin_List *list, int position, string name, char gender, int age, string phone, string role, string email, string password){
+void admin_add_user_specific(Admin_List *list, int position, string name, char gender, int age, string phone, string role, string email, string password){
     Admin_User_Element* newnode = new Admin_User_Element;
     newnode -> name = name;
     newnode -> gender = gender;
@@ -152,20 +152,6 @@ void admin_get_all_users_from_csv(Admin_List* s, string filename) {
         file.close();
     }
 }
-
-void admin_option(){
-    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
-    cout << RED  << "||" << GRAY  << " Admin welcome                   " << RED << "||" << RESET << endl;
-    cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
-    cout << RED  << "||" << RESET << " 1. Check User                   " << RED << "||" << RESET << endl; 
-    cout << RED  << "||" << RESET << " 2. Check Product                " << RED << "||" << RESET << endl;
-    cout << RED  << "||" << RESET << " 3. Check Login                  " << RED << "||" << RESET << endl;
-    cout << RED  << "||" << RESET << " 4. Logout                       " << RED << "||" << RESET << endl;
-    cout << RED  << "||" << RESET << " 5. Exit                         " << RED << "||" << RESET << endl;
-    cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
-    cout << RED  << "||" << RESET << " Enter option: ";
-}
-
 
 void admin_display_user_table(Admin_List* list, bool clear) {
     Admin_User_Element* temporary = list->head;
@@ -422,7 +408,7 @@ string admin_change_string_to_lower(string str) {
 
 void admin_check_user_modify_change_information_add_to_list(Admin_List *list, int select, string name, char gender, int age, string phone, string role, string email, string password){
     admin_delete_random_variablesx_by_index(list, select);
-    admin_add_specific(list, select, name, gender, age, phone, role, email, password);
+    admin_add_user_specific(list, select, name, gender, age, phone, role, email, password);
 }
 
 bool check_validation_of_email(Admin_List *s, string email){
@@ -816,17 +802,332 @@ void admin_exit(int time){
     exit(0);
 }
 
+// Product =====================================================================================================================================>
+struct Admin_Product_Element {
+    string id;
+    string name;
+    string category;
+    string brand;
+    double price;
+    string unit;
+    int stock;
+    Admin_Product_Element* next;
+    Admin_Product_Element* previous;
+};
+
+struct Admin_Product_List {
+    int size; 
+    Admin_Product_Element* head;
+    Admin_Product_Element* tail;
+};
+
+Admin_Product_List *create_new_admin_product_list(){
+    Admin_Product_List *New_Admin_Product_List = new Admin_Product_List;
+    New_Admin_Product_List -> size = 0;
+    New_Admin_Product_List -> head = NULL;
+    New_Admin_Product_List -> tail = NULL;
+    return New_Admin_Product_List;
+}
+
+void Admin_insert_product_begin(Admin_Product_List *list, string id, string name,string category, string brand, double price, string unit, int stock){
+    Admin_Product_Element *newnode = new Admin_Product_Element; 
+    newnode -> id = id;
+    newnode -> name = name;
+    newnode -> category = category;
+    newnode -> brand = brand;
+    newnode -> price = price;   
+    newnode -> unit = unit;
+    newnode -> stock = stock;                                                              
+    newnode -> previous = NULL;                                                                   
+    newnode -> next = list -> head;                                                            
+    if(list -> size == 0) list -> tail = newnode;                                                  
+    else list -> head -> previous = newnode;                                                        
+    list -> head = newnode;                                                                      
+    list -> size++;                                                                             
+}
+
+void Admin_insert_product_end(Admin_Product_List *list, string id, string name,string category, string brand, double price, string unit, int stock){
+    Admin_Product_Element *newnode = new Admin_Product_Element;  
+    newnode -> id = id;
+    newnode -> name = name;
+    newnode -> category = category;
+    newnode -> brand = brand;
+    newnode -> price = price;   
+    newnode -> unit = unit;
+    newnode -> stock = stock;                                                                     
+    newnode -> next = NULL;                                                                   
+    newnode -> previous = list -> tail;                                                          
+    if(list -> size == 0) list -> head = newnode;                                                  
+    else list -> tail -> next = newnode;                                                        
+    list -> tail = newnode;                                                                      
+    list -> size++;                                                                             
+}
+
+void admin_add_product_specific(Admin_Product_List *list, int position, string id, string name,string category, string brand, double price, string unit, int stock){
+    Admin_Product_Element* newnode = new Admin_Product_Element;
+    newnode -> id = id;
+    newnode -> name = name;
+    newnode -> category = category;
+    newnode -> brand = brand;
+    newnode -> price = price;   
+    newnode -> unit = unit;
+    newnode -> stock = stock;    
+    if (position == 1 || list -> size == 0) Admin_insert_product_begin(list, id, name, category, brand, price, unit, stock);
+    else if (position == list -> size + 1) Admin_insert_product_end(list, id, name, category, brand, price, unit, stock); 
+    else if(position < 0 || position > list -> size) cout << "Invalid Position" << endl;
+    else {
+        Admin_Product_Element* temporary = list->head;
+        for (int i = 1; i < position - 1; i++){temporary = temporary -> next;}
+        newnode -> previous = temporary;
+        newnode -> next = temporary -> next; 
+        if (temporary -> next != NULL) temporary -> next -> previous = newnode;
+        temporary -> next = newnode;
+        list -> size++;
+    }
+}
+
+void admin_get_all_products_from_csv(Admin_Product_List* list, const string filename) {
+    ifstream file(filename, ios::in);
+    if (!file.is_open()) {
+        cout << RED << "Cannot open the product file!" << RESET << endl;
+        return;
+    }
+    string line;
+    getline(file, line);
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string id, name, category, brand, priceStr, unit, stockStr;
+        getline(ss, id, ',');
+        getline(ss, name, ',');
+        getline(ss, category, ',');
+        getline(ss, brand, ',');
+        getline(ss, priceStr, ',');
+        getline(ss, unit, ',');
+        getline(ss, stockStr);
+        double price = stod(priceStr);
+        int stock = stoi(stockStr);
+        Admin_insert_product_end(list, id, name, category, brand, price, unit, stock);
+
+    }
+    file.close();
+}
+
+void admin_display_product_table(Admin_Product_List* list, bool clear) {
+    Admin_Product_Element* temp = list->head;
+    cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+    cout << "| ID       | Name                         | Brand    | Catgry               | Price    | Unit       | Stock  |" << endl;
+    cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+    while (temp != NULL) {                  
+        cout << "| "
+             << RED     << setw(8)  << left << temp->id        << RESET << " | "
+             << GREEN   << setw(28) << left << temp->name      << RESET << " | "
+             << YELLOW  << setw(8)  << left << temp->brand     << RESET << " | "
+             << BLUE    << setw(20) << left << temp->category  << RESET << " | "
+             << MAGENTA << setw(8)  << left << fixed << setprecision(2) << temp->price << RESET << " | "
+             << CYAN    << setw(10) << left << temp->unit      << RESET << " | "
+             << ORANGE  << setw(6)  << left << temp->stock     << RESET << " |" << endl;
+        temp = temp->next;
+    }
+    cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+    if (clear) {cout << GRAY; system("pause"); cout << RESET << endl; system("cls");}
+}
+
+void admin_check_product_filtering_brand_introduction(string text){
+    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =================================>" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Brand          " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "--------------------------------------------" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter "<< text <<" name :)                        " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "============================================" << RED << "||" << RESET << endl;
+}
+
+void admin_check_product_filtering_brand(Admin_Product_List *list, bool clear){
+    string brand;
+    admin_check_product_filtering_brand_introduction("brand");
+    cout << RED  << "||" << RESET << " Brand name: " << YELLOW; getline(cin >> ws, brand); cout << RESET;
+    int count = 0;
+    system("cls");
+    cout << brand;
+    Admin_Product_Element* temp = list -> head;
+    while (temp != NULL){
+        if (temp -> brand == brand) count ++;
+        temp = temp -> next;
+    }
+    if (count == 0) cout << RED << "Invalid input, there isn't " << brand << " in the system!!!" << RESET << endl;
+    else {
+        temp = list -> head;
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+        cout << "| ID       | Name                         | Brand    | Catgry               | Price    | Unit       | Stock  |" << endl;
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+        while (temp != NULL) {    
+            if (temp -> brand == brand){
+                cout << "| "
+                     << RED     << setw(8)  << left << temp->id        << RESET << " | "
+                     << GREEN   << setw(28) << left << temp->name      << RESET << " | "
+                     << YELLOW  << setw(8)  << left << temp->brand     << RESET << " | "
+                     << BLUE    << setw(20) << left << temp->category  << RESET << " | "
+                     << MAGENTA << setw(8)  << left << fixed << setprecision(2) << temp->price << RESET << " | "
+                     << CYAN    << setw(10) << left << temp->unit      << RESET << " | "
+                     << ORANGE  << setw(6)  << left << temp->stock     << RESET << " |" << endl;
+            }
+            temp = temp -> next;
+        }              
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+    }
+    if (clear) {cout << GRAY; system("pause"); cout << RESET << endl; system("cls");}
+}
+
+void admin_check_product_filtering_category(Admin_Product_List *list, bool clear){
+    string category;
+    admin_check_product_filtering_brand_introduction("category");
+    cout << RED  << "||" << RESET << " Brand name: " << YELLOW; getline(cin >> ws, category); cout << RESET;
+    int count = 0;
+    system("cls");
+    Admin_Product_Element* temp = list -> head;
+    while (temp != NULL){
+        if (temp -> category == category) count ++;
+        temp = temp -> next;
+    }
+    if (count == 0) cout << RED << "Invalid input, there isn't " << category << " in the system!!!" << RESET << endl;
+    else {
+        temp = list -> head;
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+        cout << "| ID       | Name                         | Brand    | Catgry               | Price    | Unit       | Stock  |" << endl;
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+        while (temp != NULL) {    
+            if (temp -> category == category){
+                cout << "| "
+                     << RED     << setw(8)  << left << temp->id        << RESET << " | "
+                     << GREEN   << setw(28) << left << temp->name      << RESET << " | "
+                     << YELLOW  << setw(8)  << left << temp->brand     << RESET << " | "
+                     << BLUE    << setw(20) << left << temp->category  << RESET << " | "
+                     << MAGENTA << setw(8)  << left << fixed << setprecision(2) << temp->price << RESET << " | "
+                     << CYAN    << setw(10) << left << temp->unit      << RESET << " | "
+                     << ORANGE  << setw(6)  << left << temp->stock     << RESET << " |" << endl;
+            }
+            temp = temp -> next;
+        }              
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+    }
+    if (clear) {cout << GRAY; system("pause"); cout << RESET << endl; system("cls");}
+}
+
+void admin_check_product_filtering_price(Admin_Product_List *list, bool clear){
+    double price_min, price_max;
+    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =================================>" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Brand          " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "--------------------------------------------" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter the product's price range:)          " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "============================================" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Price minmum: " << YELLOW; cin >> price_min; cout << RESET;
+    cout << RED  << "||" << RESET << " Price minmum: " << YELLOW; cin >> price_max; cout << RESET;
+    int count = 0;
+    system("cls");
+    Admin_Product_Element* temp = list -> head;
+    while (temp != NULL){
+        if (temp -> price >= price_min && temp -> price <= price_max) count ++;
+        temp = temp -> next;
+    }
+    if (count == 0) cout << RED << "Invalid input, there isn't product that has price between " << price_min << "$ and " << price_max << "$ in the system!!!" << RESET << endl;
+    else {
+        temp = list -> head;
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+        cout << "| ID       | Name                         | Brand    | Catgry               | Price    | Unit       | Stock  |" << endl;
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+        while (temp != NULL) {    
+            if (temp -> price >= price_min && temp -> price <= price_max){
+                cout << "| "
+                     << RED     << setw(8)  << left << temp->id        << RESET << " | "
+                     << GREEN   << setw(28) << left << temp->name      << RESET << " | "
+                     << YELLOW  << setw(8)  << left << temp->brand     << RESET << " | "
+                     << BLUE    << setw(20) << left << temp->category  << RESET << " | "
+                     << MAGENTA << setw(8)  << left << fixed << setprecision(2) << temp->price << RESET << " | "
+                     << CYAN    << setw(10) << left << temp->unit      << RESET << " | "
+                     << ORANGE  << setw(6)  << left << temp->stock     << RESET << " |" << endl;
+            }
+            temp = temp -> next;
+        }              
+        cout << "+----------+------------------------------+----------+----------------------+----------+------------+--------+" << endl;
+    }
+    if (clear) {cout << GRAY; system("pause"); cout << RESET << endl; system("cls");}
+}
+
+void admin_check_product_filtering(Admin_Product_List *list){
+    int option = 0;
+    while (option != 5){
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin welcome/Check Product     " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 1. Brand                        " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << " 2. Category                     " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << " 3. Price                        " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 4. Stock                        " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 5. Back                         " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Enter option: "; cin >> option;
+        switch (option){
+            case 1: system("cls"); admin_check_product_filtering_brand(list, true);
+            case 2: system("cls"); admin_check_product_filtering_category(list, true);
+            case 3: system("cls"); admin_check_product_filtering_price(list, true);
+            case 4: system("cls");
+            case 5: system("cls");break;
+            default: system("cls"); cout << RED << "Invalid option" << RESET << endl; break;
+        }
+    }
+}
+
+void admin_check_product_menu(Admin_Product_List *admin_list_product){
+    int option = 0;
+    while (option != 9){
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin welcome/Check Product     " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 1. All Product                  " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << " 2. Sorting                      " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << " 3. Filtering                    " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 4. Searching                    " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 5. Grouping & Aggregation       " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 6. Checking Inventory           " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 7. Adding or Removing Products  " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 8. Edit Product                 " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 9. Back                         " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Enter option: "; cin >> option;
+        switch (option){
+            case 1: system("cls");admin_display_product_table(admin_list_product, true);break;
+            case 3: system("cls");admin_check_product_filtering(admin_list_product);break;
+            case 9: system("cls");break;
+            default: system("cls"); cout << RED << "Invalid option" << RESET << endl; break;
+        }
+    }
+}
+
+void admin_option(){
+    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin welcome                   " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " 1. Check User                   " << RED << "||" << RESET << endl; 
+    cout << RED  << "||" << RESET << " 2. Check Product                " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " 3. Check Login                  " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " 4. Logout                       " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " 5. Exit                         " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter option: ";
+}
+
 void admin_introduction(){
     cout << "Hello! Admin" << endl;
     cout << "Admin" << endl;
     int option = 0;
     Admin_List *Admin_List_User = create_new_admin_user_list();
+    Admin_Product_List *Admin_List_Product = create_new_admin_product_list();
     admin_get_all_users_from_csv(Admin_List_User, "Database/user.csv");
+    admin_get_all_products_from_csv(Admin_List_Product, "Database/products.csv");
     system("cls");
     while (option != 4){
         admin_option(); cout << YELLOW; cin >> option; cout << RESET;
         switch (option){
             case 1: system("cls");admin_check_user_menu(Admin_List_User);break;
+            case 2: system("cls");admin_check_product_menu(Admin_List_Product);break;
             case 4: system("cls"); break;
             case 5: system("cls"); admin_exit(3); break;
             default: system("cls"); cout << RED << "Invalid option" << RESET << endl; break;
