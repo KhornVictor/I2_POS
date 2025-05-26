@@ -4,6 +4,6 @@ using namespace std;
 
 
 void cashier_introduction(){
-    cout << "Hello! Cashier" << endl;
+    cout << "Hello! Nani" << endl;
 }
 
