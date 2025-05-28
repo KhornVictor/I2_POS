@@ -13,7 +13,7 @@ string Admin_Capitalization(string index){
 }
 
 int main(){
-    string name = "bopha songha thyda";
+    string name = "hello i'm victor";
     name = Admin_Capitalization(name);
     cout << "name: " << name << endl;
 }

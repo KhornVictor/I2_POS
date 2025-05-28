@@ -45,7 +45,7 @@ Product ID,Product Name,Category,Brand,Price,Unit,Stock
 44,Milk,Dairy,Alpha,2.59,liter,130
 45,Milk Powder,Dairy,Delta,7.81,bag,105
 46,Mango,Fruit,Echo,3.27,kg,130
-47,Mustard,Condiment,Delta,2.29,bottle,100
+47,Mustard,Condiment,Delta,2.29,bottle,0
 48,Mushrooms,Vegetable,Echo,3.67,kg,135
 49,Notebook,Stationery,Gamma,3.85,unit,122
 50,Nuts,Snacks,Foxtrot,6.78,bag,160
@@ -74,7 +74,7 @@ Product ID,Product Name,Category,Brand,Price,Unit,Stock
 73,Shampoo,Personal Care,Juno,5.83,bottle,91
 74,Shrimp,Meat,Gamma,12.55,kg,149
 75,Soap,Personal Care,Halo,2.15,bar,135
-76,Soda,Beverage,Echo,1.99,can,188
+76,Soda,Beverage,Echo,1.99,can,0
 77,Soup,Canned,Foxtrot,2.49,can,116
 78,Spinach,Vegetable,Gamma,3.44,kg,134
 79,Sugar,Baking,Charlie,2.25,kg,179

@@ -1203,7 +1203,7 @@ void admin_check_product_searching(Admin_Product_List* list){
         cout << RED  << "||" << RESET << "---------------------------------" << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " 1. Name                         " << RED << "||" << RESET << endl; 
         cout << RED  << "||" << RESET << " 2. ID                           " << RED << "||" << RESET << endl;
-        cout << RED  << "||" << RESET << " 3. Exit                         " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 3. Back                         " << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << "=================================" << RED << "||" << RESET << endl;
         cout << RED  << "||" << RESET << " Enter option: "; cin >> option;
         switch (option){
@@ -1213,6 +1213,176 @@ void admin_check_product_searching(Admin_Product_List* list){
             default: system("cls"); cout << RED << "Invalid option" << RESET << endl; break;
         }
     }
+}
+
+void admin_check_product_group_and_aggregation_count_product_brand(Admin_Product_List* list){
+    string brand;
+    int count = 0;
+    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================================================>" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation/Average Price " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "------------------------------------------------------------------" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter brand's name to count                                      " << RED << "||" << RESET << endl; 
+    cout << RED  << "||" << RESET << "==================================================================" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter Brand: "; getline(cin >> ws, brand);
+    brand = Admin_Capitalization(brand);
+    Admin_Product_Element* temporary = list -> head;
+    system("cls");
+    bool check = false;
+    while (temporary != NULL){
+        if (temporary -> brand == brand) check = true;
+        temporary = temporary -> next;
+    }
+    if (!check) cout << RED << "Invalid Category"  << RESET << endl;
+    else{
+        temporary = list -> head;
+        while(temporary != NULL){
+            if (temporary -> brand == brand) {
+                count ++;
+            }
+            temporary = temporary -> next;
+        }
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================================================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation/Average Price " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "------------------------------------------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Average number of " << brand << "'s brand is: " << count << "\t\t\t    " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << "==================================================================" << RED << "||" << RESET << endl;
+    }
+    cout << GRAY; system("pause"); cout << RESET << endl; system("cls");
+}
+
+void admin_check_product_group_and_aggregation_count_product_category(Admin_Product_List* list){
+    string category;
+    int count = 0;
+    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================================================>" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation/Average Price " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "------------------------------------------------------------------" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter category's name to count                                   " << RED << "||" << RESET << endl; 
+    cout << RED  << "||" << RESET << "==================================================================" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter Category: "; getline(cin >> ws, category);
+    category = Admin_Capitalization(category);
+    Admin_Product_Element* temporary = list -> head;
+    system("cls");
+    bool check = false;
+    while (temporary != NULL){
+        if (temporary -> category == category) check = true;
+        temporary = temporary -> next;
+    }
+    if (!check) cout << RED << "Invalid Category"  << RESET << endl;
+    else{
+        temporary = list -> head;
+        while(temporary != NULL){
+            if (temporary -> category == category) {
+                count ++;
+            }
+            temporary = temporary -> next;
+        }
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================================================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation/Average Price " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "------------------------------------------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Average number of " << category << "'s category is: " << count << "\t\t\t    " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << "==================================================================" << RED << "||" << RESET << endl;
+    }
+    cout << GRAY; system("pause"); cout << RESET << endl; system("cls");
+}
+
+void admin_check_product_group_and_aggregation_count_product(Admin_Product_List* list){
+    int option = 0;
+    while (option != 3){
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================================================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation/Count Product " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "------------------------------------------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 1. Brand                                                         " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << " 2. Category                                                      " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 3. Back                                                          " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "==================================================================" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Enter option: "; cin >> option;
+        switch (option){
+            case 1: system("cls"); admin_check_product_group_and_aggregation_count_product_brand(list);break;
+            case 2: system("cls"); admin_check_product_group_and_aggregation_count_product_category(list);break;
+            case 3: system("cls");break;
+            default: system("cls"); cout << RED << "Invalid option" << RESET << endl; break;
+        }
+    }
+}
+
+void admin_check_product_group_and_aggregation_average_price(Admin_Product_List* list){
+    string category;
+    int sum = 0,count = 0;
+    double average;
+    cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================================================>" << RESET << endl;
+    cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation/Average Price " << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << "------------------------------------------------------------------" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter Category to check average price                            " << RED << "||" << RESET << endl; 
+    cout << RED  << "||" << RESET << "==================================================================" << RED << "||" << RESET << endl;
+    cout << RED  << "||" << RESET << " Enter Category: "; getline(cin >> ws, category);
+    category = Admin_Capitalization(category);
+    Admin_Product_Element* temporary = list -> head;
+    system("cls");
+    bool check = false;
+    while (temporary != NULL){
+        if (temporary -> category == category) check = true;
+        temporary = temporary -> next;
+    }
+    if (!check) cout << RED << "Invalid Category"  << RESET << endl;
+    else{
+        temporary = list -> head;
+        while(temporary != NULL){
+            if (temporary -> category == category) {
+                sum += temporary -> price;
+                count ++;
+            }
+            temporary = temporary -> next;
+        }
+        average = (sum*1.0) / count;
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================================================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation/Average Price " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "------------------------------------------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Average price of " << category << "'s category is: "<< fixed << setprecision(2) << average << "$" << RED << "\t\t\t    ||" << RESET << endl; 
+        cout << RED  << "||" << RESET << "==================================================================" << RED << "||" << RESET << endl;
+    }
+    cout << GRAY; system("pause"); cout << RESET << endl; system("cls");
+}
+
+void admin_check_product_group_and_aggregation(Admin_Product_List* list){
+    int option = 0;
+    while (option != 3){
+        cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " ==============================================>" << RESET << endl;
+        cout << RED  << "||" << GRAY  << " Admin welcome/Check Product/Grouping & Aggregation     " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "--------------------------------------------------------" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 1. Count Product                                       " << RED << "||" << RESET << endl; 
+        cout << RED  << "||" << RESET << " 2. Average Price                                       " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " 3. Back                                                " << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << "========================================================" << RED << "||" << RESET << endl;
+        cout << RED  << "||" << RESET << " Enter option: "; cin >> option;
+        switch (option){
+            case 1: system("cls"); admin_check_product_group_and_aggregation_count_product(list);break;
+            case 2: system("cls"); admin_check_product_group_and_aggregation_average_price(list);break;
+            case 3: system("cls");break;
+            default: system("cls"); cout << RED << "Invalid option" << RESET << endl; break;
+        }
+    }
+}
+
+void admin_check_product_check_inventory(Admin_Product_List* list){
+    cout << GREEN << "This is all products and stock" << RESET << endl;
+    Admin_Product_Element* temp = list->head;
+    int no = 1;
+    cout << "+------+------------------------------------+--------+" << endl;
+    cout << "| No   | Product Name                       | Stock  |" << endl;
+    cout << "+------+------------------------------------+--------+" << endl;
+    while (temp != NULL) {
+        if (temp -> stock == 0) cout << RED;
+        else if (temp -> stock < 100) cout << YELLOW;
+        cout << "| ";
+        cout << setw(3)  << left << no << "  | ";
+        cout << setw(35) << left << temp->name << "| ";
+        cout << setw(6)  << left << temp->stock << " |" << endl;
+        cout << RESET;
+        temp = temp->next;
+        no++;
+    }
+    cout << "+------+------------------------------------+--------+" << endl;
+    cout << GRAY; system("pause"); cout << RESET << endl; system("cls");
 }
 
 void admin_check_product_menu(Admin_Product_List *admin_list_product){
@@ -1236,6 +1406,8 @@ void admin_check_product_menu(Admin_Product_List *admin_list_product){
             case 1: system("cls");admin_display_product_table(admin_list_product, true);break;
             case 3: system("cls");admin_check_product_filtering(admin_list_product);break;
             case 4: system("cls");admin_check_product_searching(admin_list_product);break;
+            case 5: system("cls");admin_check_product_group_and_aggregation(admin_list_product);break;
+            case 6: system("cls");admin_check_product_check_inventory(admin_list_product);break;
             case 9: system("cls");break;
             default: system("cls"); cout << RED << "Invalid option" << RESET << endl; break;
         }
@@ -1243,7 +1415,6 @@ void admin_check_product_menu(Admin_Product_List *admin_list_product){
 }
 
 // Admin Introduction ==========================================================================================================================================================>
-
 void admin_option(){
     cout << CYAN << "<===== " << GREEN << "Admin" << CYAN << " =======================>" << RESET << endl;
     cout << RED  << "||" << GRAY  << " Admin welcome                   " << RED << "||" << RESET << endl;
@@ -1277,4 +1448,3 @@ void admin_introduction(){
         }
     }
 }
-
