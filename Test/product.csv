@@ -1,0 +1,101 @@
+Product ID,Product Name,Category,Brand,Price,Unit,Stock
+1,Apples,Fruit,Bravo,3.49,kg,153
+2,Bacon,Meat,Halo,6.58,pack,63
+3,Bananas,Fruit,Charlie,2.73,kg,149
+4,Batteries,Electronics,Gamma,7.94,pack,128
+5,Beans,Canned,Bravo,2.37,can,103
+6,Beef,Meat,Charlie,11.23,kg,114
+7,Bread,Bakery,Delta,2.66,loaf,161
+8,Broccoli,Vegetable,Echo,4.55,kg,85
+9,Butter,Dairy,Gamma,4.72,block,111
+10,Cable,Electronics,Alpha,5.36,unit,154
+11,Carrots,Vegetable,Foxtrot,3.28,kg,97
+12,Cheese,Dairy,Halo,5.15,block,106
+13,Chips,Snacks,Echo,3.85,bag,190
+14,Chocolate,Snacks,Alpha,4.27,bar,138
+15,Cleaner,Household,Juno,6.92,bottle,139
+16,Coffee,Beverage,Foxtrot,7.01,bag,140
+17,Cookies,Snacks,Delta,3.74,box,115
+18,Corn,Vegetable,Halo,3.61,kg,101
+19,Crackers,Snacks,Charlie,2.94,box,136
+20,Cucumber,Vegetable,Juno,3.57,kg,157
+21,Custard,Dessert,Echo,4.39,pack,147
+22,Deodorant,Personal Care,Bravo,4.68,unit,110
+23,Detergent,Household,Charlie,8.62,bottle,159
+24,Eggs,Dairy,Foxtrot,3.49,dozen,144
+25,Energy Bar,Snacks,Gamma,2.99,bar,114
+26,Eraser,Stationery,Halo,1.59,unit,199
+27,Fish,Meat,Foxtrot,10.73,kg,94
+28,Flour,Baking,Bravo,2.84,kg,198
+29,Garlic,Vegetable,Gamma,1.84,kg,148
+30,Glue,Stationery,Delta,2.31,tube,164
+31,Grapes,Fruit,Halo,4.78,kg,106
+32,Ice Cream,Dessert,Echo,6.44,tub,195
+33,Jam,Breakfast,Alpha,2.45,jar,197
+34,Juice,Beverage,Charlie,3.92,bottle,88
+35,Ketchup,Condiment,Alpha,2.36,bottle,123
+36,Kiwi,Fruit,Delta,3.89,kg,138
+37,Lemon,Fruit,Juno,2.99,kg,119
+38,Lettuce,Vegetable,Gamma,3.12,head,170
+39,Lime,Fruit,Bravo,2.51,kg,123
+40,Lightbulb,Electronics,Foxtrot,4.66,unit,109
+41,Lotion,Personal Care,Echo,5.97,bottle,135
+42,Marker,Stationery,Delta,2.73,unit,183
+43,Mayonnaise,Condiment,Charlie,3.86,jar,186
+44,Milk,Dairy,Alpha,2.59,liter,130
+45,Milk Powder,Dairy,Delta,7.81,bag,105
+46,Mango,Fruit,Echo,3.27,kg,130
+47,Mustard,Condiment,Delta,2.29,bottle,0
+48,Mushrooms,Vegetable,Echo,3.67,kg,135
+49,Notebook,Stationery,Gamma,3.85,unit,122
+50,Nuts,Snacks,Foxtrot,6.78,bag,160
+51,Oats,Breakfast,Bravo,3.92,bag,157
+52,Oil,Condiment,Delta,5.13,bottle,102
+53,Onions,Vegetable,Alpha,2.24,kg,189
+54,Orange,Fruit,Juno,3.69,kg,121
+55,Pasta,Baking,Halo,2.77,pack,124
+56,Peach,Fruit,Foxtrot,3.48,kg,118
+57,Peanut Butter,Condiment,Bravo,4.88,jar,128
+58,Pears,Fruit,Delta,3.22,kg,111
+59,Pen,Stationery,Gamma,1.95,unit,135
+60,Peppers,Vegetable,Alpha,3.73,kg,151
+61,Pineapple,Fruit,Halo,4.64,unit,93
+62,Pickles,Condiment,Echo,3.18,jar,127
+63,Plum,Fruit,Foxtrot,3.33,kg,98
+64,Pork,Meat,Delta,9.12,kg,118
+65,Potatoes,Vegetable,Charlie,3.16,kg,152
+66,Protein Powder,Nutrition,Gamma,15.79,can,95
+67,Razor,Personal Care,Charlie,6.54,unit,123
+68,Relish,Condiment,Delta,2.78,jar,107
+69,Rice,Grains,Foxtrot,3.25,kg,137
+70,Salt,Condiment,Echo,1.74,kg,193
+71,Sausage,Meat,Alpha,7.22,pack,136
+72,Sauce,Condiment,Delta,2.63,jar,116
+73,Shampoo,Personal Care,Juno,5.83,bottle,91
+74,Shrimp,Meat,Gamma,12.55,kg,149
+75,Soap,Personal Care,Halo,2.15,bar,135
+76,Soda,Beverage,Echo,1.99,can,0
+77,Soup,Canned,Foxtrot,2.49,can,116
+78,Spinach,Vegetable,Gamma,3.44,kg,134
+79,Sugar,Baking,Charlie,2.25,kg,179
+80,Syrup,Breakfast,Alpha,4.52,bottle,101
+81,Tape,Stationery,Juno,1.89,roll,158
+82,Tea,Beverage,Charlie,2.87,box,182
+83,Tofu,Meat Alternative,Echo,4.91,block,145
+84,Tomatoes,Vegetable,Delta,3.45,kg,110
+85,Toothpaste,Personal Care,Gamma,3.96,tube,139
+86,Trail Mix,Snacks,Foxtrot,4.24,bag,111
+87,Vinegar,Condiment,Alpha,2.19,bottle,168
+88,Water,Beverage,Echo,1.79,bottle,176
+89,Whipped Cream,Dessert,Charlie,5.16,can,174
+90,Wipes,Personal Care,Gamma,4.01,pack,131
+91,Yogurt,Dairy,Halo,2.95,cup,125
+92,Tissues,Personal Care,Alpha,2.33,box,102
+93,Granola,Breakfast,Juno,3.61,bag,126
+94,Oreo,Snacks,Gamma,2.44,pack,142
+95,Hot Sauce,Condiment,Charlie,2.36,bottle,121
+96,Soy Sauce,Condiment,Alpha,3.14,bottle,105
+97,Charger,Electronics,Bravo,5.63,unit,168
+98,Notebook,Stationery,Halo,3.92,unit,165
+99,Glue Stick,Stationery,Echo,2.17,tube,117
+100,Relish Jar,Condiment,Gamma,2.58,jar,128

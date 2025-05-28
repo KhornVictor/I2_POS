@@ -19,7 +19,7 @@ int main(){
             case CUSTOMER:customer_introduction();break;
             case CASHIER:cashier_introduction();break;
             case MANAGER:manager_introduction();break;
-            case ADMIN:admin_introduction();break;
+            case ADMIN:admin_introduction();break;  
         }       
     }
 }
